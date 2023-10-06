@@ -9,11 +9,10 @@ from users import db
 
 load_dotenv()
  
-db.entries = db.read_db()
- 
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
+    print(db.new_entries)
 
 @bot.event
 async def on_message(message):

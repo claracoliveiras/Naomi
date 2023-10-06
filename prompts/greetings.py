@@ -1,8 +1,10 @@
 
-from users import db
+import users.db as db
 import time
 from datetime import datetime
 from requests import get_Horoscope
+
+db.new_entries = db.readJson()
 
 async def setup(orig_msg):
     # send instructions
@@ -13,10 +15,10 @@ async def greetings(message):
    
     userId = message.author.id
     print(userId, type(userId))
-    if str(userId) not in db.entries:
+    if str(userId) not in db.new_entries:
         return await setup(message)
     
-    user_data = db.entries[str(userId)]
+    user_data = db.new_entries[str(userId)]
 
     name = user_data["name"]
     zodiac = user_data["zodiac"]

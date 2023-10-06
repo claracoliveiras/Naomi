@@ -1,17 +1,14 @@
-from json import dump, load
+import json
 
-entries = {} # this is everyone's data, its also the same in db.json
+new_entries = {}
 
-def write_db(data):
-    with open('db.json', 'w') as f:
-        dump(data, f, indent=4)
-
-def read_db():
-    with open('db.json', 'r') as f:
-        data = load(f)
+def readJson():
+    with open('users/db.json', 'r') as f:
+        data = json.load(f)
     return data
 
+def writeJson(new_entries): 
+    with open('users/db.json', 'w') as f:
+        json.dump(new_entries, f, indent=4)
 
-def update_entries():
-    print(entries)
-    write_db(entries)
+
