@@ -1,8 +1,9 @@
 from botinit import bot
-import parsedatetime
+
 from datetime import datetime
 from random import randint
 from users.db import readJson, writeJson, new_entries
+import util
 
 new_entries = readJson()
 
@@ -23,9 +24,7 @@ async def config(ctx, *args):
     if setting == 'birthday':
         if userId not in new_entries:
             new_entries[userId] = {}
-        cal = parsedatetime.Calendar()
-        time_struct, status = cal.parse(parse_Birthday_String(args))
-        dt = datetime(*time_struct[:6])
+        dt = util.string_to_datetime(args)
         
         value = int(dt.timestamp())
 
@@ -45,8 +44,3 @@ async def config(ctx, *args):
         return await ctx.message.channel.send(f'{setting.capitalize()} set!')
     await ctx.message.channel.send('Property doesnt exist')
 
-def parse_Birthday_String(args):
-    new_string = ""
-    for i in range(1, len(args)):
-        new_string += " " + args[i]
-    return new_string

@@ -5,6 +5,7 @@ from botinit import bot
 import os
 import logging
 from commands import profilesetup
+from commands.reminders import dailyReminder
 from users import db
 
 load_dotenv()
@@ -29,6 +30,4 @@ async def on_message(message):
     await bot.process_commands(message)
 
     
-
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
-bot.run(os.getenv('TOKEN'), log_handler=handler)
+bot.run(os.getenv('TOKEN'))

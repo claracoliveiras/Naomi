@@ -1,8 +1,8 @@
-
 import users.db as db
 import time
 from datetime import datetime
 from requests import get_Horoscope
+from users.remindersdb import reminder_entries
 
 db.new_entries = db.readJson()
 
@@ -31,7 +31,11 @@ async def greetings(message):
     birthdaywhen = user_data["birthday"] 
     
     date = f'<t:{secondssince}:F>'
-    birthday = f'<t:{birthday_When(birthdaywhen)}:R>' 
+    birthday = f'<t:{birthday_When(birthdaywhen)}:R>'
+    
+    if checkIfDateInsideReminders(reminder_entries) == True:
+        await message.channel.send(f'### Hi {name}, {greetingHour()}:sparkles: \n:date: Today is {date}! \n\n:crystal_ball: The horoscope for **{zodiac}** :{zodiac.lower()}: today is: \n*{horoscope}* \n\n:fireworks: **Your birthday** is {birthday}.\n Also, you have an event set for today!')
+ 
     await message.channel.send(f'### Hi {name}, {greetingHour()}:sparkles: \n:date: Today is {date}! \n\n:crystal_ball: The horoscope for **{zodiac}** :{zodiac.lower()}: today is: \n*{horoscope}* \n\n:fireworks: **Your birthday** is {birthday}.\n')
 
 
@@ -57,3 +61,4 @@ def greetingHour():
         return greeting[2]
     if hour >= 0 and hour < 6:
         return greeting[3]
+
