@@ -5,15 +5,12 @@ from botinit import bot
 import os
 import logging
 from commands import profilesetup
-from commands.reminders import dailyReminder
-from users import db
 
 load_dotenv()
  
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print(db.new_entries)
 
 @bot.event
 async def on_message(message):

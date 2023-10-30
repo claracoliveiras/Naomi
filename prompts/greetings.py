@@ -1,47 +1,41 @@
-import users.db as db
 import time
 from datetime import datetime
+import pytz
 from requests import get_Horoscope
-from users.remindersdb import reminder_entries
+from sql import getIds, fetchById
 
-db.new_entries = db.readJson()
 
 async def setup(orig_msg):
     # send instructions
-    return await orig_msg.channel.send("### Hey!\nIs this the first time I see you here? \nYou should run those commands: \nFirst, setup your name with: .config name [Name]\n Then, setup your birthday: .config birthday [date] \n And then your zodiac sign with: .config zodiac [sign]")
+    return await orig_msg.channel.send("### Hey!\nIs this the first time I see you here? \nYou should run those commands: \nFirst, setup your name with: .config name [Name]\n Then, setup your birthday: .config birthday [xxxx-xx-xx] \n And then your zodiac sign with: .config zodiac [sign]")
     
 async def greetings(message):
     await message.channel.typing()
-   
-    userId = message.author.id
-    print(userId, type(userId))
-    if str(userId) not in db.new_entries:
-        return await setup(message)
     
-    user_data = db.new_entries[str(userId)]
+    userId = message.author.id
+    users = getIds()
+    user = fetchById(userId)
+    
+    if userId not in users:
+        return await setup(message)
 
-    name = user_data["name"]
-    zodiac = user_data["zodiac"]
+    name = user[0][4]
+    zodiac = user[0][2]
+    
     secondssince = int(time.time())
     
     horoscope = await get_Horoscope(zodiac.lower())
     
-    #big seconds thing
-    #2004 7 7 
-    birthdaywhen = user_data["birthday"] 
+    birthdaywhen = user[0][1]
     
     date = f'<t:{secondssince}:F>'
     birthday = f'<t:{birthday_When(birthdaywhen)}:R>'
-    
-    if checkIfDateInsideReminders(reminder_entries) == True:
-        await message.channel.send(f'### Hi {name}, {greetingHour()}:sparkles: \n:date: Today is {date}! \n\n:crystal_ball: The horoscope for **{zodiac}** :{zodiac.lower()}: today is: \n*{horoscope}* \n\n:fireworks: **Your birthday** is {birthday}.\n Also, you have an event set for today!')
  
     await message.channel.send(f'### Hi {name}, {greetingHour()}:sparkles: \n:date: Today is {date}! \n\n:crystal_ball: The horoscope for **{zodiac}** :{zodiac.lower()}: today is: \n*{horoscope}* \n\n:fireworks: **Your birthday** is {birthday}.\n')
 
 
 #I despise this.
-def birthday_When(timestamp):
-    birthdaydt = datetime.fromtimestamp(timestamp)
+def birthday_When(birthdaydt):
     nowdt = datetime.now()
     
     # if the month of birth is bigger than the actual month
