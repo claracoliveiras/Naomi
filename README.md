@@ -7,5 +7,3 @@ To get started, you must do an initial configuration of your profile:
 1. Run the command .config name [your_name]
 2. Run the command .config birthday [your_birthday]
 3. Run the command .config zodiac [your_zodiac]
-
-> This initial setup allows your data to be registered on the JSON based database that is used by the bot, which takes the user discord ID as a key and stores them on a **Dictionary object**. This Dict is later appended to the JSON file.
