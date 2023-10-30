@@ -5,14 +5,12 @@ from botinit import bot
 import os
 import logging
 from commands import profilesetup
-from users import db
 
 load_dotenv()
  
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print(db.new_entries)
 
 @bot.event
 async def on_message(message):
@@ -29,6 +27,4 @@ async def on_message(message):
     await bot.process_commands(message)
 
     
-
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
-bot.run(os.getenv('TOKEN'), log_handler=handler)
+bot.run(os.getenv('TOKEN'))
