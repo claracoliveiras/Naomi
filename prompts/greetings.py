@@ -3,6 +3,7 @@ from datetime import datetime
 import pytz
 from requests import get_Horoscope
 from sql import getIds, fetchById
+from reminderSql import getRemindersDates
 
 
 async def setup(orig_msg):
@@ -15,6 +16,7 @@ async def greetings(message):
     userId = message.author.id
     users = getIds()
     user = fetchById(userId)
+    remindersDates = getRemindersDates(userId)
     
     if userId not in users:
         return await setup(message)
@@ -30,6 +32,8 @@ async def greetings(message):
     
     date = f'<t:{secondssince}:F>'
     birthday = f'<t:{birthday_When(birthdaywhen)}:R>'
+    if datetime.now().date() in remindersDates:
+        await message.channel.send("You have a reminder set for today.")
  
     await message.channel.send(f'### Hi {name}, {greetingHour()}:sparkles: \n:date: Today is {date}! \n\n:crystal_ball: The horoscope for **{zodiac}** :{zodiac.lower()}: today is: \n*{horoscope}* \n\n:fireworks: **Your birthday** is {birthday}.\n')
 
@@ -56,3 +60,4 @@ def greetingHour():
     if hour >= 0 and hour < 6:
         return greeting[3]
 
+    

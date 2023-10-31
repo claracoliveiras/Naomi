@@ -15,7 +15,7 @@ async def config(ctx, *args):
     sampleArgs = ('name', 'zodiac', 'birthday', 'timezone')
     sampleZodiacs = ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces']
     userId = ctx.author.id
-    setting = args[0]
+    setting = args[0].lower()
     value = args[1].lower()
     
     if userId not in new_entries:

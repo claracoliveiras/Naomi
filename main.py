@@ -4,7 +4,7 @@ from prompts import greetings
 from botinit import bot
 import os
 import logging
-from commands import profilesetup
+from commands import profilesetup, reminders
 
 load_dotenv()
  
