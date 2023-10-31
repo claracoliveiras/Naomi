@@ -1,6 +1,6 @@
 import mysql.connector;
 
-mydb = mysql.connector.connect(
+dbConnector = mysql.connector.connect(
     host= 'localhost',
     port=3306,
     user= 'root',
@@ -8,7 +8,7 @@ mydb = mysql.connector.connect(
 )
 
 def getIds():
-    idCursor = mydb.cursor()
+    idCursor = dbConnector.cursor()
     idCursor.execute("Select id FROM users")
     lista = idCursor.fetchall()
     listaIds = []
@@ -17,29 +17,29 @@ def getIds():
     return listaIds
 
 def insertUser(id):
-    insertCursor = mydb.cursor()
+    insertCursor = dbConnector.cursor()
     personInsert = "INSERT INTO users (name, id, birthday, zodiac, timezone) VALUES (%s, %s, %s, %s, %s)"
     val = (None, id, None, None, None)
     insertCursor.execute(personInsert, val)
-    mydb.commit()
+    dbConnector.commit()
     print(insertCursor.rowcount, "record inserted.")
 
 def fetchById(id):
-    indvCursor = mydb.cursor()
+    indvCursor = dbConnector.cursor()
     indvCursor.execute(f"SELECT * FROM users WHERE id ={id}")
     userById = indvCursor.fetchall()
     return userById
 
 def alterUserById(id, setting, value):
-    alterCursor = mydb.cursor()
+    alterCursor = dbConnector.cursor()
     personUpdate = f"UPDATE users SET {setting} = %s WHERE id = %s"
     val = (value, id)
     alterCursor.execute(personUpdate, val)
-    mydb.commit()
+    dbConnector.commit()
     print(alterCursor.rowcount, "records affected")
 
 def deleteById(id):
-    deleteCursor = mydb.cursor()
+    deleteCursor = dbConnector.cursor()
     deleteCursor.execute(f"DELETE FROM users WHERE id = {id}")
-    mydb.commit()
+    dbConnector.commit()
     print(deleteCursor.rowcount, "record(s) deleted")
