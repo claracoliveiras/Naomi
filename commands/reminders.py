@@ -1,5 +1,5 @@
 from botinit import bot
-from reminderSql import insertReminder, getRemindersByUserId, deleteReminderByName, deleteReminderById
+from reminderSql import insertReminder, getRemindersByUserId, deleteReminderByName, deleteReminderById, updateReminder
 
 @bot.command()
 async def reminder(ctx, *args):
@@ -29,12 +29,14 @@ async def reminder(ctx, *args):
         reminders = getRemindersByUserId(userId)
         return await ctx.message.channel.send(f"Reminder set for date {date}")
     #edit
-    elif setting == 'edit' and len(args) != 3:
+    elif setting == 'edit' and len(args) != 4:
         return await ctx.message.channel.send("Incorrect argument positioning or size.")
-    elif setting == 'edit' and len(args) == 3:
-        settingToEdit = args[1]
-        settingUpdate = args[2]
-        #keep writing this
+    elif setting == 'edit' and len(args) == 4:
+        reminderID = args[1]
+        settingToEdit = args[2]
+        settingUpdateValue = args[3]
+        updateReminder(reminderID, settingToEdit, settingUpdateValue)
+        return await ctx.message.channel.send(f"Reminder {settingToEdit} updated.")
     #delete
     elif setting == 'delete' and len(args) != 2:
         return await ctx.message.channel.send("Incorrect argument positioning or size.")

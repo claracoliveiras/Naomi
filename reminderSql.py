@@ -38,14 +38,14 @@ def deleteReminderById(reminderID):
     
     # edit - edits 
     # [.reminder edit[0] id[1] name[2] [newname][3] 
-    # [.reminder edit[0] id[1] name[2] [newdate][4]
+    # [.reminder edit[0] id[1] name[2] [newdate][3]
 def updateReminder(reminderID, setting, newValue):
     updateCursor = dbConnector.cursor()
-    reminderUpdate = f"UPDATE reminders SET {setting} = %s WHERE id = %s"
+    reminderUpdate = f"UPDATE reminders SET {setting} = %s WHERE reminderID = %s"
     val = (newValue, reminderID)
     updateCursor.execute(reminderUpdate, val)
     dbConnector.commit()
-    print(alterCursor.rowcount, "records affected")
+    print(updateCursor.rowcount, "records affected")
     
     
     
