@@ -1,4 +1,5 @@
 from botinit import bot
+from discord import Embed
 from reminderSql import insertReminder, getRemindersByUserId, deleteReminderByName, deleteReminderById, updateReminder
 
 @bot.command()
@@ -18,6 +19,8 @@ async def reminder(ctx, *args):
     # search by name: [.reminder search [name]]
     # search by date: [.reminder search [date]]
     # search by today: [.reminder search today]
+    
+
 
     if setting not in sampleArgs:
         return await ctx.message.channel.send("Invalid setting")
@@ -44,6 +47,17 @@ async def reminder(ctx, *args):
         nameToDelete = args[1]
         deleteReminderByName(nameToDelete)
         return await ctx.message.channel.send(f"Reminder {nameToDelete} deleted.")
+    elif setting == 'list':
+        list_embed = Embed(title ="Reminders", description="Description", color=0x034e95)
+        formatted_data = []
+        for i, item in enumerate(reminders, start=1):
+            formatted_data.append(f"{i}. ID: {item[0]}, Name: {item[1]}, Date: {item[2]}")
+
+        formatted_string = "\n".join(formatted_data)
+        list_embed.description = formatted_string
+        return await ctx.message.channel.send(embed=list_embed)
+        
+        
     
 
         
